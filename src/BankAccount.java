@@ -11,14 +11,35 @@ public class BankAccount {
         this.accountNumber = accountNumber;
     }
 
-    public void deposit(double amount){
+    // original code
+  /*  public void deposit(double amount){
         balance += amount;
     }
 
     public void withdraw(double amount) {
         balance -= amount;
+    }*/
+
+    // Implementing synchronize keyword
+
+    // first methode of synchronization
+    public synchronized void deposit(double amount){
+        balance += amount;
     }
+
+    // Alternative way of synchronization.
+
+    public void withdraw(double amount) {
+        synchronized (this) {
+            balance -= amount;
+        }
+    }
+
     public double currentBalance(){
         return balance;
     }
+
+
+
+
 }

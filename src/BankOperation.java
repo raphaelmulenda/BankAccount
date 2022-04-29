@@ -24,7 +24,11 @@ public class BankOperation {
             }
         } ;*/
 
-        Thread customer1 = new Thread(new Runnable() {
+
+        // implementing runnable in teh Thread.
+
+
+       Thread customer1 = new Thread(new Runnable() {
             @Override
             public void run() {
                 bankAccount.deposit(300);
@@ -43,6 +47,34 @@ public class BankOperation {
                 System.out.println("Customer2" + " Balance after withdraw: " + bankAccount.currentBalance() );
             }
         });
+
+
+        // Making the BankAccount Threadsafe by using synchronize Keyword
+
+        /*Thread customer1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (bankAccount){
+                    bankAccount.deposit(300);
+                    System.out.println("Customer1" + " Balance after deposit: " + bankAccount.currentBalance() );
+                    bankAccount.withdraw(50.00);
+                    System.out.println("Customer1" + " Balance after withdraw: " + bankAccount.currentBalance() );
+                }
+
+            }
+        });
+
+        Thread customer2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (bankAccount){
+                    bankAccount.deposit(250.45);
+                    System.out.println("Customer2" + " Balance after deposit: " + bankAccount.currentBalance() );
+                    bankAccount.withdraw(100.00);
+                    System.out.println("Customer2" + " Balance after withdraw: " + bankAccount.currentBalance() );
+                }
+            }
+        });*/
 
         customer1.start();
         customer2.start();
