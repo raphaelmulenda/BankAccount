@@ -1,3 +1,4 @@
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -7,12 +8,12 @@ import java.util.concurrent.locks.ReentrantLock;
 public class BankAccount {
     private double balance;
     private String accountNumber;
-    ReentrantLock keyLock;
+    Lock keyLock;
 
-    public BankAccount(String accountNumber, double balance,ReentrantLock rl) {
+    public BankAccount(String accountNumber, double balance) {
         this.balance = balance;
         this.accountNumber = accountNumber;
-        this.keyLock = rl;
+        this.keyLock = new ReentrantLock();
     }
 
     // original code
@@ -43,16 +44,26 @@ public class BankAccount {
     // In this Part Reentrant Locks will be implemented
     public void deposit(double amount){
         keyLock.lock();
-        balance += amount;
-        keyLock.unlock();
+        try {
+            balance += amount;
+        }
+        finally {
+            keyLock.unlock();
+        }
+
     }
 
 
 
     public void withdraw(double amount) {
             keyLock.lock();
-            balance -= amount;
-            keyLock.unlock();
+            try {
+                balance -= amount;
+            }
+
+            finally {
+                keyLock.unlock();
+            }
 
     }
 

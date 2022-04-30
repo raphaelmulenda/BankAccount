@@ -5,8 +5,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class BankOperation {
     public static void main(String[] args) {
-        ReentrantLock keyLock = new ReentrantLock();
-        BankAccount bankAccount = new BankAccount("12345-678",1000.00,keyLock);
+
+        BankAccount bankAccount = new BankAccount("12345-678",1000.00);
         /*Thread customer1 = new Thread(){
 
             public void run() {
