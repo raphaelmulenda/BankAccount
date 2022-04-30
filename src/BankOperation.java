@@ -1,9 +1,12 @@
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Created by Raphael Mulenda on 29/04/2022.
  */
 public class BankOperation {
     public static void main(String[] args) {
-        BankAccount bankAccount = new BankAccount("12345-678",1000.00);
+        ReentrantLock keyLock = new ReentrantLock();
+        BankAccount bankAccount = new BankAccount("12345-678",1000.00,keyLock);
         /*Thread customer1 = new Thread(){
 
             public void run() {

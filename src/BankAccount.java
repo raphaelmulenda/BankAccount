@@ -1,3 +1,5 @@
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Created by Raphael Mulenda on 29/04/2022.
  */
@@ -5,10 +7,12 @@
 public class BankAccount {
     private double balance;
     private String accountNumber;
+    ReentrantLock keyLock;
 
-    public BankAccount(String accountNumber, double balance) {
+    public BankAccount(String accountNumber, double balance,ReentrantLock rl) {
         this.balance = balance;
         this.accountNumber = accountNumber;
+        this.keyLock = rl;
     }
 
     // original code
@@ -23,7 +27,7 @@ public class BankAccount {
     // Implementing synchronize keyword
 
     // first methode of synchronization
-    public synchronized void deposit(double amount){
+   /* public synchronized void deposit(double amount){
         balance += amount;
     }
 
@@ -34,6 +38,25 @@ public class BankAccount {
             balance -= amount;
         }
     }
+*/
+
+    // In this Part Reentrant Locks will be implemented
+    public void deposit(double amount){
+        keyLock.lock();
+        balance += amount;
+        keyLock.unlock();
+    }
+
+
+
+    public void withdraw(double amount) {
+            keyLock.lock();
+            balance -= amount;
+            keyLock.unlock();
+
+    }
+
+
 
     public double currentBalance(){
         return balance;
