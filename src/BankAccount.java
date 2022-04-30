@@ -1,3 +1,4 @@
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -42,7 +43,7 @@ public class BankAccount {
 */
 
     // In this Part Reentrant Locks will be implemented
-    public void deposit(double amount){
+ /*   public void deposit(double amount){
         keyLock.lock();
         try {
             balance += amount;
@@ -64,6 +65,50 @@ public class BankAccount {
             finally {
                 keyLock.unlock();
             }
+
+    }*/
+
+  /* This Section I will implement the tryLock() with timeout value of 1 second, the form of the tryLock() methode will accept two parameters
+    the first parameter is the timeout value and the second parameter is the time unit of the first parameter : I will use the TimeUnit.MILLISECONDS for second parameters.
+*/
+    public void deposit(double amount){
+       try {
+           boolean flag = keyLock.tryLock(100,TimeUnit.MILLISECONDS);
+           if (flag){
+               try {
+                   balance += amount;
+               }finally {
+                   keyLock.unlock();
+               }
+           }
+           else {
+               System.out.println("Could not get the lock!");
+           }
+       }catch (Exception e){
+           e.printStackTrace();
+
+       }
+
+    }
+
+
+    public void withdraw(double amount) {
+
+        try {
+            boolean flag = keyLock.tryLock(100,TimeUnit.MILLISECONDS);
+            if (flag){
+                try{
+                    balance -= amount;
+                }finally {
+                    keyLock.unlock();
+                }
+            }else {
+                System.out.println("Could not get the lock!");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
