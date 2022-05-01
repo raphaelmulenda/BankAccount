@@ -72,11 +72,13 @@ public class BankAccount {
     the first parameter is the timeout value and the second parameter is the time unit of the first parameter : I will use the TimeUnit.MILLISECONDS for second parameters.
 */
     public void deposit(double amount){
+        boolean status = false;
        try {
            boolean flag = keyLock.tryLock(100,TimeUnit.MILLISECONDS);
            if (flag){
                try {
                    balance += amount;
+                   status = true;
                }finally {
                    keyLock.unlock();
                }
@@ -88,17 +90,19 @@ public class BankAccount {
            e.printStackTrace();
 
        }
-
+        System.out.println("Transaction status = " + status);
     }
 
 
     public void withdraw(double amount) {
+        boolean status = false ;
 
         try {
-            boolean flag = keyLock.tryLock(100,TimeUnit.MILLISECONDS);
-            if (flag){
+
+            if (keyLock.tryLock(100,TimeUnit.MILLISECONDS)){
                 try{
                     balance -= amount;
+                    status = true;
                 }finally {
                     keyLock.unlock();
                 }
@@ -109,6 +113,7 @@ public class BankAccount {
         }catch (Exception e){
             e.printStackTrace();
         }
+        System.out.println("Transaction status = " + status);
 
     }
 
